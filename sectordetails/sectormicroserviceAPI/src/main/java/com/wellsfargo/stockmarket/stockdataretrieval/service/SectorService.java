@@ -3,6 +3,7 @@ package com.wellsfargo.stockmarket.stockdataretrieval.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.wellsfargo.stockmarket.stockdataretrieval.repository.SectorRepo;
 import com.wellsfargo.stockmarket.stockdataretrieval.model.Company;
 import com.wellsfargo.stockmarket.stockdataretrieval.model.Sector;
+import com.wellsfargo.stockmarket.stockdataretrieval.model.SectorPriceDetails;
 import com.wellsfargo.stockmarket.stockdataretrieval.model.SectorPriceModel;
 import com.wellsfargo.stockmarket.stockdataretrieval.model.Stock;
 import com.wellsfargo.stockmarket.stockdataretrieval.repository.CompanyRepo;
@@ -48,13 +50,34 @@ public class SectorService {
 	}	
 	
 	public List<Stock> getStocks(int companyCode) {
-		return stockRepo.findByCompanyCode(companyCode);
+		return stockRepo.findByCompanycode(companyCode);
 	}
 
 	public List<Company> getCompany(Long sectorid) {
 		Sector sector = getSector(sectorid);
 		return companyRepo.findBySectorName(sector.getSectorName());
 	}
+	
+	
+	public List<SectorPriceDetails> getSectorComparison(List<String> sectorList, Date fromDate, Date toDate){
+		List<SectorPriceDetails> sectorPriceDetailsList = new ArrayList<>();
+		for(String sector: sectorList) {
+		
+		List<Integer> companyCode = companyRepo.findCompanyCodeBySector(sector);
+		List<SectorPriceDetails> sectorPricedetails1 = stockRepo.findPriceByCompanycode(companyCode, fromDate, toDate);
+		for(SectorPriceDetails sectordetail: sectorPricedetails1) {
+			sectordetail.setSector(sector);
+		}
+	
+		sectorPriceDetailsList.addAll(sectorPricedetails1);
+		
+		}
+		return sectorPriceDetailsList;
+	}
+	
+	
+	
+	/*
 	
 	public List<String> getCurrentPrice(SectorPriceModel sectorPriceModel) {
 		double price = 0.0;
@@ -163,5 +186,6 @@ public class SectorService {
 		}
 		return res;
 	}
+	*/
 	
 }

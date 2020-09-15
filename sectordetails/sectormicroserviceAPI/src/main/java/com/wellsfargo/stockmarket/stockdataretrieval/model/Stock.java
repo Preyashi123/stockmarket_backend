@@ -1,51 +1,57 @@
 package com.wellsfargo.stockmarket.stockdataretrieval.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
-@Entity
+@Entity(name="companystockprice")
 @Table(name="companystockprice")
 public class Stock {
 	@Id
 	@Column(name="companystockpriceid")
-	private int stockId;
+	private int companystockpriceid;
 	@Column(name="companycode")
-	private int companyCode;
+	private int companycode;
 	@Column(name="currentprice")
-	private double currentPrice;
+	private long currentprice;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "YYYY-MM-DD")
 	@Column(name="stockpricedate")
-	private String date;
+	private Date stockpricedate;
+	public int getCompanystockpriceid() {
+		return companystockpriceid;
+	}
+	public void setCompanystockpriceid(int companystockpriceid) {
+		this.companystockpriceid = companystockpriceid;
+	}
+	public int getCompanycode() {
+		return companycode;
+	}
+	public void setCompanycode(int companycode) {
+		this.companycode = companycode;
+	}
+	public long getCurrentprice() {
+		return currentprice;
+	}
+	public void setCurrentprice(long currentprice) {
+		this.currentprice = currentprice;
+	}
+	public Date getStockpricedate() {
+		return stockpricedate;
+	}
+	public void setStockpricedate(Date stockpricedate) {
+		this.stockpricedate = stockpricedate;
+	}
 	
-	public Stock() {
-		
-	}
-	public int getStockId() {
-		return stockId;
-	}
-	public void setStockId(int stockId) {
-		this.stockId = stockId;
-	}
-	public int getCompanyCode() {
-		return companyCode;
-	}
-	public void setCompanyCode(int companyCode) {
-		this.companyCode = companyCode;
-	}
-	public double getCurrentPrice() {
-		return currentPrice;
-	}
-	public void setPrice(double currentPrice) {
-		this.currentPrice = currentPrice;
-	}
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
+	
 	
 	
 }
